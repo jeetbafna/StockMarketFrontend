@@ -38,8 +38,20 @@ router.get('/addcredit', ensureAuthenticated, (req, res) =>{
   });
 });
 
+router.get('/removecredit', ensureAuthenticated, (req, res) =>{
+  res.render('removecredit', {
+    user: req.session.user
+  });
+});
+
 router.get('/stockhist', ensureAuthenticated, (req, res) =>{
   res.render('stockhist', {
+    user: req.session.user
+  });
+});
+
+router.get('/buystock', ensureAuthenticated, (req, res) =>{
+  res.render('buystock', {
     user: req.session.user
   });
 });

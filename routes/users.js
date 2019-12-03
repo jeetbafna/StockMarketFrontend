@@ -171,4 +171,61 @@ router.post('/addcredit', (req, res) => {
   });
 });
 
+//Adding credits
+router.post('/removecredit', (req, res) => {
+  var credit = parseInt(req.body.credit);
+  credit = req.session.user.credit - credit;
+  console.log(credit);
+  const id = req.session.user._id;
+  request.post('http://localhost:8000/users/removecredit',
+    { form: { id: id, credit:credit}, },
+        function (e, r, body) {
+          var body1 = JSON.parse(body);
+          if(body1.update){
+              req.flash(
+                  'success_msg',
+                  'The amount has been sent to the bank'
+                );
+              req.session.user = body1.model;
+                res.redirect('/mybankaccount');
+          } else{
+              res.render('removecredit', {
+                credit
+              });
+          }
+  });
+});
+
+//user_profile_edit
+router.post('/buystock', (req, res, next) => {
+  var ticker_symbol = "abc";
+  var stock_name = "google";
+  const {purchase_price} = req.body;
+  const stock_qty = parseInt(req.body.stock_qty);
+  var credit = req.session.user.credit - (purchase_price*stock_qty);
+  if(credit>0){
+  const id = req.session.user._id;
+  request.post('http://localhost:8000/users/buystock',
+    { form: { id: id, ticker_symbol:ticker_symbol,stock_name:stock_name,stock_qty:stock_qty, purchase_price:purchase_price, credit:credit}, },
+        function (e, r, body) {
+          var body1 = JSON.parse(body);
+          if(body1.update){
+              req.flash(
+                  'success_msg',
+                  'The stock has been purchased'
+                );
+              console.log(req.session);
+              req.session.user = body1.model;
+              res.redirect('/dashboard');
+          } else{
+              res.render('buystock');
+          }
+  });
+  } else{
+    req.flash('error_msg', 'Not enough credits');
+    res.redirect('/dashboard');
+  }
+});
+
+
 module.exports = router;

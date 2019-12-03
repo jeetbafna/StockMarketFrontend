@@ -31,15 +31,7 @@ const UserSchema = new mongoose.Schema({
     required: true
   }}],
 
-  stock: [ {stock_id: {
-    type: Number,
-    required: true
-  },
-  stock_id: {
-    type: Number,
-    required: true
-  },
-  ticker_symbol: {
+  stock: [ { ticker_symbol: {
     type: String,
     required: true
   },
@@ -56,8 +48,7 @@ const UserSchema = new mongoose.Schema({
     required: true
   },
   selling_price: {
-    type: Number,
-    required: true
+    type: Number
   },
   purchase_date: {
     type: Date,

@@ -472,3 +472,27 @@ a:hover span {
    margin-left: 80px; 
 }
 
+th, td {
+    border-bottom: 1px solid #ddd;
+}
+
+button{
+    background-color: #000000;
+    border-radius: 30px;
+    color: white;
+    padding: 3px 25px;
+    text-align: center;
+    display: inline-block;
+    font-size: 13px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.buy{
+    background-color: #68da4b;
+    opacity: 0.9;
+}
+.sell{
+    background-color: #ef1010d9;
+    opacity: 0.9;
+}

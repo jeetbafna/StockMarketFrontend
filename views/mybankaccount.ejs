@@ -108,6 +108,7 @@
 										  <th scope="col">Account Number</th>
 										  <th scope="col">Routing Number</th>
 										  <th scope="col">Actions</th>
+										  <th></th>
 										</tr>
 									  </thead>
 									  <tbody>
@@ -117,7 +118,9 @@
 										  <td><%= bank[i].acc_num %></td>
 										  <td><%= bank[i].routing_num %></td>
 										  <td><a class="addbutton" href="/addcredit" id="addcredit">
-                          <i class="fas fa-dollar-sign"></i>Add Credits</a></td>
+                          					<i class="fas fa-dollar-sign"></i>Add Credits</a></td>
+                          				   <td><a class="addbutton" href="/removecredit" id="addcredit">
+                          					<i class="fas fa-dollar-sign"></i>Send to bank</a></td>
 										</tr>
                     <% } %>
 									  </tbody>
