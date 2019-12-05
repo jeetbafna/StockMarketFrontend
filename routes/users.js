@@ -17,7 +17,7 @@ router.get('/register', forwardAuthenticated, (req, res) => res.render('register
 
 // Register
 router.post('/register', (req, res) => {
-  const { name, email, password, password2 } = req.body;
+  const { name, email, physical_address1, physical_address2, physical_address3, p_name, password, password2 } = req.body;
   // var queryObject = {
   //       name: req.body.name,
   //       email: req.body.email,
@@ -25,7 +25,7 @@ router.post('/register', (req, res) => {
   //       password2: req.body.password2
   //   }
   request.post('http://localhost:8000/users/register1',
-    { form: { name: name, password: password, password2: password2, email: email}, },
+    { form: { name: name, password: password, password2: password2, email: email, physical_address1:physical_address1, physical_address2:physical_address2, physical_address3:physical_address3, p_name:p_name}, },
         function (e, r, body) {
           var body1 = JSON.parse(body);
           console.log(body1.user);
@@ -42,7 +42,10 @@ router.post('/register', (req, res) => {
                 name,
                 email,
                 password,
-                password2
+                password2,
+                physical_address1,
+                physical_address2,
+                physical_address3
               });
           }
         console.log(body);
@@ -85,6 +88,59 @@ router.post('/login', (req, res, next) => {
             );
             res.redirect('/users/login');
           }
+  });
+});
+
+//Forgot Password
+// Login
+
+router.post('/forgot_password', (req, res, next) => {
+  const { email, p_name} = req.body;
+  request.post('http://localhost:8000/users/forgot_password',
+    { form: { email:email, p_name:p_name}, },
+        function (e, r, body) {
+          if(e){
+            req.flash('error_msg', e);
+            res.render('forgot_password');
+          } else{
+          var body1 = JSON.parse(body);
+          if(body1.model.p_name==p_name){
+            req.flash('success_msg', 'Correct answer');
+            res.redirect('/reset_password/'+email);
+          }
+          else{
+            req.flash('error_msg','Wrong answer');
+            res.redirect('/forgot_password');
+          }
+        }
+          
+  });
+});
+
+//Reset Password
+router.post('/reset_password', (req, res, next) => {
+  const { email, password, password2 } = req.body;
+  if(password!=password2){
+    req.flash('error_msg', 'Passwords do not match');
+    res.render('forgot_password');
+  }
+  request.post('http://localhost:8000/users/reset_password',
+    { form: { email:email, password:password}, },
+        function (e, r, body) {
+          if(e){
+            req.flash('error_msg', e);
+            res.render('reset_password');
+          } else{
+          var body1 = JSON.parse(body);
+          if(body1.user){
+            req.flash('success_msg', 'Password changed successfully');
+            res.redirect('/users/login');
+          } else{
+            req.flash('error_msg',body1.err);
+            res.render('forgot_password');
+          }
+        }
+          
   });
 });
 

@@ -107,4 +107,15 @@ router.get('/recurrentbuying/:ticker_symbol', ensureAuthenticated, (req, res) =>
   }
   
 });
+
+router.get('/forgot_password', (req, res) =>{
+  res.render('forgot_password');
+});
+
+router.get('/reset_password/:email', (req, res) =>{
+  var email = req.params.email;
+  res.render('reset_password', {
+    email:email
+  });
+});
 module.exports = router;
