@@ -337,18 +337,17 @@ router.post('/reccbuystock/:ticker', async(req, res, next) => {
         var credit = req.session.user.credit - (purchase_price*stock_qty);
         if(credit>0){
         const id = req.session.user._id;
-        var body = new Promise ((resolve,reject)=>{
-      //   let model = await request.post('http://localhost:8000/users/buyreccstock1',
-      //   { form: { id: id, ticker_symbol:ticker_symbol,stock_name:stock_name,stock_qty:stock_qty, purchase_price:purchase_price, credit:credit, hour:hour, minutes:minutes}});
-      //   model.on('response',res=>{
-      //     resolve(res);
-      //     req.session.user = res.model;
-      //   });
-      // });
+        try{
+        let model = await request.post('http://localhost:8000/users/buyreccstock1',
+        { form: { id: id, ticker_symbol:ticker_symbol,stock_name:stock_name,stock_qty:stock_qty, purchase_price:purchase_price, credit:credit, hour:hour, minutes:minutes}});
         req.flash('success_msg','The schedule has been set');
         res.redirect('/dashboard');
+        console.log(model.body);
+      } catch(err){
+        req.flash('error_msg','The schedule could not be set');
+        res.redirect('/dashboard');
 
-
+      }
         req.flash('success_msg', 'The stock has been bought');
     }
   }
