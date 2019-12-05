@@ -76,10 +76,10 @@ router.post('/login', (req, res, next) => {
 
             //console.log(req.user);
           } else{
-            console.log(body1.error);
+            console.log(body1.err);
             req.flash(
-                  'success_msg',
-                  body1.error               
+                  'error_msg',
+                  'Incorrect email or password'               
             );
             res.redirect('/users/login');
           }
@@ -196,16 +196,18 @@ router.post('/removecredit', (req, res) => {
   });
 });
 
-//user_profile_edit
-router.post('/buystock', (req, res, next) => {
-  var ticker_symbol = "abc";
-  var stock_name = "google";
+//Buying stocks
+router.post('/buystock/:ticker', (req, res, next) => {
+  var ticker_symbol = req.params.ticker;
+  for(var i = 0; i< req.session.stocks.length;i++){
+    if(req.session.stocks[i][0]==ticker_symbol){
+        var stock_name = req.session.stocks[i][1];
   const {purchase_price} = req.body;
   const stock_qty = parseInt(req.body.stock_qty);
   var credit = req.session.user.credit - (purchase_price*stock_qty);
   if(credit>0){
   const id = req.session.user._id;
-  request.post('http://localhost:8000/users/buystock',
+  request.post('http://localhost:8000/users/buystock1',
     { form: { id: id, ticker_symbol:ticker_symbol,stock_name:stock_name,stock_qty:stock_qty, purchase_price:purchase_price, credit:credit}, },
         function (e, r, body) {
           var body1 = JSON.parse(body);
@@ -214,7 +216,7 @@ router.post('/buystock', (req, res, next) => {
                   'success_msg',
                   'The stock has been purchased'
                 );
-              console.log(req.session);
+              console.log(body1.model);
               req.session.user = body1.model;
               res.redirect('/dashboard');
           } else{
@@ -225,7 +227,46 @@ router.post('/buystock', (req, res, next) => {
     req.flash('error_msg', 'Not enough credits');
     res.redirect('/dashboard');
   }
+    }
+  }
+  
+
 });
 
+//Sell Stocks
+router.post('/sellstock/:ticker', (req, res, next) => {
+  var ticker_symbol = req.params.ticker;
+   for(var i = 0; i< req.session.stocks.length;i++){
+    if(req.session.stocks[i][0]==ticker_symbol){
+        var stock_name = req.session.stocks[i][1];
+        const {purchase_price} = req.body;
+        console.log(req.session.user.credit);
+        const stock_qty = parseInt(req.body.stock_qty);
+        var credit = req.session.user.credit + (purchase_price*stock_qty);
+        const id = req.session.user._id;
+        console.log(credit);
+      request.post('http://localhost:8000/users/sellstock2',
+        { form: { id: id, ticker_symbol:ticker_symbol,stock_name:stock_name,stock_qty:stock_qty, purchase_price:purchase_price, credit:credit}, },
+        function (e, r, body) {
+          var body1 = JSON.parse(body);
+          if(body1.update){
+              req.flash(
+                  'success_msg',
+                  'The stock has been sold'
+                );
+              req.session.user = body1.model;
+              res.redirect('/dashboard');
+          } else{
+            var error = body1.err;
+              req.flash(
+                  'error_msg',
+                  body1.err
+                );
+              res.redirect('/dashboard');
+          }
+  });
+    }
+  }
+});
 
 module.exports = router;

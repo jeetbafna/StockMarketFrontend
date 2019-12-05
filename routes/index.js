@@ -1,21 +1,36 @@
 const express = require('express');
 const router = express.Router();
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
+var request = require('request');
 
 // Welcome Page
 router.get('/', forwardAuthenticated, (req, res) => res.render('welcome'));
 
 // Dashboard
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
-  res.render('dashboard', {
-    user: req.session.user
+  var stocks ={};
+  request.post('http://localhost:3000/users/stocks',
+        function (e, r, body) {
+          var body1 = JSON.parse(body);
+          if(e){
+             console.log(e);
+              
+          } else{
+            stocks = body1.output;
+            req.session.stocks = stocks;
+            res.render('dashboard', {
+              user: req.session.user,
+              stocks: stocks
+            });
+          }
   });
 });
 
 
 router.get('/mystock', ensureAuthenticated, (req, res) =>
   res.render('mystock', {
-    user: req.session.user
+    user: req.session.user,
+    stock1: req.session.user.stock
   })
 );
 
@@ -50,9 +65,26 @@ router.get('/stockhist', ensureAuthenticated, (req, res) =>{
   });
 });
 
-router.get('/buystock', ensureAuthenticated, (req, res) =>{
+router.get('/buystock/:i', ensureAuthenticated, (req, res) =>{
+  var i = req.params.i;
   res.render('buystock', {
-    user: req.session.user
+    user: req.session.user,
+    stock: req.session.stocks[i],
+    stocks: req.session.stocks,
+    i : i
   });
+});
+
+router.get('/sellstock/:ticker_symbol', ensureAuthenticated, (req, res) =>{
+  for(var i =0;i<req.session.stocks.length;i++){
+    if(req.params.ticker_symbol == req.session.stocks[i][0]){
+      res.render('sellstock', {
+      user: req.session.user,
+      stock: req.session.stocks[i],
+      stocks: req.session.stocks,
+  });
+    }
+  }
+  
 });
 module.exports = router;

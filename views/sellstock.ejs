@@ -107,21 +107,18 @@
                 <div class="container-fluid" id="containerdiv">
                         <div class="card" id="cardtickerdiv">
                             <div class="card-body">
-                                <form action="/users/buystock/<%= stock[0]%>" method="POST">
+                                <form action="/users/sellstock/<%= stock[0]%>" method="POST">
                                     <table>
                                     <tr>
-                                        <td><pre><p style="font-size: 18px;">Please enter the quantity of stocks you wish to buy  </pre></td>
-                                        <td><input id="stock_qty" name="stock_qty" type="number" min="0"></input></p></pre><br></td>
+                                        <td><pre><p style="font-size: 18px;">Please enter the quantity of stocks you wish to sell  </pre></td>
+                                        <td><input id="stock_qty" name="stock_qty" type="number" min="0" max="<%= user.stock[0].stock_qty %>"></input></p></pre><br></td>
                                     </tr>
                                     <tr>
                                         <td><pre><p style="font-size: 18px;">Current Price</p></td>
                                         <td><input id="purchase_price" name="purchase_price" value="<%= stock[2] %>" readonly="readonly"></input></p></pre></tr></td>
                                     </tr>
                                     </table>
-                                    <button type="submit" class="buy" style="padding-top: 10px; padding-bottom: 10px; padding-right: 50px;padding-left: 50px;">Buy</button>
-                                    <a href="#"><button class="buy" style="padding-top: 10px; padding-bottom: 10px; padding-right: 50px;padding-left: 50px;">Recurring Buy</button></a>
-                                </form>
-
+                                    <button type="submit" class="sell" style="padding-top: 10px; padding-bottom: 10px; padding-right: 50px;padding-left: 50px;">Sell</button>
                             </div>
                         </div>
                 </div>

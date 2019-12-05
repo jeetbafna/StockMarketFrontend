@@ -81,7 +81,8 @@ span {
             list-style-type: none;
             margin: 0px;
             padding: 0px;
-            width: 3177.2px;
+            width: 80%;
+            height: 50px;
             transition-timing-function: linear;
             transition-duration: 0s;
             left: 0px;
@@ -100,7 +101,7 @@ span {
 
 
 .tic-hover li:hover {
-    background-color: #242a33 !important;
+    background-color: #33b9ce !important;
 }
 
 .tic-hover li

@@ -177,105 +177,38 @@
                                   </div>
                             <table id="myTable" class="sortable" width=100%;>      
                             <div class="list-group list-group-flush">
+                              <thead>
+                                <tr>
                                 <th align="center" onclick="sortTable(0)">Ticker Symbol</th>
                                 <th align="center" onclick="sortTable(1)">Stock Name</th>
                                 <th align="center" onclick="sortTable(2)">Stock Quantity</th>
                                 <th align="center" onclick="sortTable(3)">Purchase Price</th>  
                                 <th align="center" onclick="sortTable(3)">Purchase Date</th>
                                 <th></th>
-                              
-                            <tr>
-                              <td>ALB</td>
+                                <th></th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <% for(var i = 0; i < stock1.length; i++) { %>
+                              <tr>
+                              <td><%= stock1[i].ticker_symbol %></td>
                               <td>
-                              <a href="#" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">Google
+                              <a href="#" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action"><%= stock1[i].stock_name %>
                                 <span id="span">
 
                                     <span id="span"><i class="fa fa-chart-line"  style="color:#3cba54;"></i></span>
                                     <i class="fa fa-shopping-cart" style="color:#FF5733;"></i></span>
                               </a></td>
-                              <td>30</td>
-                              <td>90.00</td>
-                              <td>11/25/2019</td>
-                              <td id='but' style=" width: 204px;"><button class="sell">Sell</button>
+                              <td><%= stock1[i].stock_qty %></td>
+                              <td><%= stock1[i].purchase_price %></td>
+                              <td><%= stock1[i].purchase_date %></td>
+                              <td id='but' style=" width: 40px;"><a href="/sellstock/<%= stock1[i].ticker_symbol %>"><button class="sell">Sell</button></a>
+                              </td>
+                              <td id='but' style=" width: 180px;"><a href="/sellstock"><button class="sell">Recurring sell</button></a>
                               </td>
                             </tr>
-
-                            <tr>
-                              <td>APP</td>
-                              <td>
-                              <a href="#" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">Apple<span id="span">
-                                    <span id="span"><i class="fa fa-chart-line"  style="color:#3cba54;"></i></span>
-                                    <i class="fa fa-shopping-cart" style="color:#FF5733;"></i></span>
-                              </a></td>
-                              <td>50</td>
-                              <td>70.00</td>
-                              <td>11/25/2019</td>
-                              <td id='but' style=" width: 204px;"><button class="sell">Sell</button>
-                              </td>
-                                  
-                            </tr>
-
-                            <tr> 
-                              <td>APP</td>
-                              <td>
-                              <a href="#" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">Microsoft<span id="span">
-                                    <span id="span"><i class="fa fa-chart-line"  style="color:#3cba54;"></i></span>
-                                    <i class="fa fa-shopping-cart" style="color:#FF5733;"></i></span>
-                              </a></td>
-                              <td>60</td>
-                              <td>85.00</td>
-                              <td>11/24/2019</td>
-                              <td id='but' style=" width: 204px;"><button class="sell">Sell</button>
-                              </td>
-                                  
-                            </tr>
-
-                            <tr>
-                              <td>FBK</td>
-                              <td>  
-                              <a href="#" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">Facebook<span id="span">
-                                    <span id="span"><i class="fa fa-chart-line"  style="color:#3cba54;"></i></span>
-                                    <i class="fa fa-shopping-cart" style="color:#FF5733;"></i></span>
-                              </a></td>
-                              <td>80</td>
-                              <td>35.00</td>
-                              <td>10/25/2019</td>
-                              <td id='but' style=" width: 204px;"><button class="sell">Sell</button>
-                              </td>    
-                            </tr>
-
-                            <tr>
-                              <td>AMZ</td>
-                              <td> 
-                              <a href="#" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">Amazon <span id="span">
-                                    <span id="span"><i class="fa fa-chart-line"  style="color:#3cba54;"></i></span>
-                                    <i class="fa fa-shopping-cart" style="color:#FF5733;"></i></span>
-                              </a></td>
-                              <td>90</td>
-                              <td>40.00</td>
-                              <td>12/22/2019</td>
-                              <td id='but' style=" width: 204px;"><button class="sell">Sell</button>
-                              </td>
-                                  
-                            </tr>
-
-                            <tr>
-                              <td>APP</td>
-                              <td>  
-                              <a href="#" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">Apple<span id="span">
-                                    <span id="span"><i class="fa fa-chart-line"  style="color:#3cba54;"></i></span>
-                                    <i class="fa fa-shopping-cart" style="color:#FF5733;"></i></span>
-                              </a></td>
-                              <td>50</td>
-                              <td>50.00</td>
-                              <td>11/12/2019</td>
-                              <td id='but' style=" width: 204px;"><button class="sell">Sell</button>
-                              </td>
-                                  
-                            </tr>
-
-                            
-
+                          <% } %>
+                            </tbody>
                             </div>
                             </table>
                           
