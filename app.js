@@ -61,12 +61,16 @@ app.use((req, res, next) => {
   next()
 });
 
+
 // Routes
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
 app.use("/static", express.static('./static/'));
 app.use(compression());
 global.login = false;
+app.use(function(req, res, next){
+    res.status(404).render('errorpage');
+});
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
