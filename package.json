@@ -24,6 +24,8 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "request": "^2.88.0",
+    "request-promise": "^4.2.5",
+    "util": "^0.12.1",
     "webticker": "^3.0.0"
   },
   "devDependencies": {

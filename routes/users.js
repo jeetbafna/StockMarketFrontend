@@ -3,6 +3,8 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const request = require('request');
+const util = require('util');
+const rp = require('request-promise');
 // Load User model
 const User = require('../models/User');
 const { forwardAuthenticated } = require('../config/auth');
@@ -229,8 +231,6 @@ router.post('/buystock/:ticker', (req, res, next) => {
   }
     }
   }
-  
-
 });
 
 //Sell Stocks
@@ -265,6 +265,59 @@ router.post('/sellstock/:ticker', (req, res, next) => {
               res.redirect('/dashboard');
           }
   });
+    }
+  }
+});
+
+//Buying stocks
+router.post('/reccbuystock/:ticker', async(req, res, next) => {
+  var ticker_symbol = req.params.ticker;
+  for(var i = 0; i< req.session.stocks.length;i++){
+    if(req.session.stocks[i][0]==ticker_symbol){
+        var stock_name = req.session.stocks[i][1];
+        const {purchase_price,hour,minutes} = req.body;
+        const stock_qty = parseInt(req.body.stock_qty);
+        var credit = req.session.user.credit - (purchase_price*stock_qty);
+        if(credit>0){
+        const id = req.session.user._id;
+        const body = await rp.post('http://localhost:8000/users/buyreccstock1',
+        { form: { id: id, ticker_symbol:ticker_symbol,stock_name:stock_name,stock_qty:stock_qty, purchase_price:purchase_price, credit:credit, hour:hour, minutes:minutes}}).then(function(body){
+          console.log(body);
+          console.log("updated");
+          req.flash(
+                  'success_msg',
+                  'The stock has been purchased'
+                );
+              console.log(body.model);
+              req.session.user = body.model;
+              res.redirect('/dashboard');
+            }).catch(function(err){
+              req.flash('error_msg', err);
+              res.redirect('/dashboard');
+            });
+  
+        // console.log("Schedule has been set");
+        
+        // if(!body){
+        //   console.log("not updated");
+        //     req.flash('error_msg', body.err);
+        //     res.redirect('/dashboard');
+        // }
+        // else{
+        //   console.log(body);
+        //   console.log("updated");
+        //   req.flash(
+        //           'success_msg',
+        //           'The stock has been purchased'
+        //         );
+        //       console.log(body.model);
+        //       req.session.user = body.model;
+        //       res.redirect('/dashboard');
+        // }
+  } else{
+    req.flash('error_msg', 'Not enough credits');
+    res.redirect('/dashboard');
+  }
     }
   }
 });

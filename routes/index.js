@@ -87,4 +87,17 @@ router.get('/sellstock/:ticker_symbol', ensureAuthenticated, (req, res) =>{
   }
   
 });
+
+router.get('/recurrentbuying/:ticker_symbol', ensureAuthenticated, (req, res) =>{
+  for(var i =0;i<req.session.stocks.length;i++){
+    if(req.params.ticker_symbol == req.session.stocks[i][0]){
+      res.render('recurrentbuying', {
+      user: req.session.user,
+      stock: req.session.stocks[i],
+      stocks: req.session.stocks,
+  });
+    }
+  }
+  
+});
 module.exports = router;
