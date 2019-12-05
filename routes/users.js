@@ -254,6 +254,7 @@ router.post('/sellstock/:ticker', (req, res, next) => {
                   'success_msg',
                   'The stock has been sold'
                 );
+              console.log(body1.model);
               req.session.user = body1.model;
               res.redirect('/dashboard');
           } else{
@@ -282,14 +283,14 @@ router.post('/reccbuystock/:ticker', async(req, res, next) => {
         const id = req.session.user._id;
         const body = await rp.post('http://localhost:8000/users/buyreccstock1',
         { form: { id: id, ticker_symbol:ticker_symbol,stock_name:stock_name,stock_qty:stock_qty, purchase_price:purchase_price, credit:credit, hour:hour, minutes:minutes}}).then(function(body){
-          console.log(body);
+          var body1 = JSON.parse(body);
           console.log("updated");
           req.flash(
                   'success_msg',
                   'The stock has been purchased'
                 );
-              console.log(body.model);
-              req.session.user = body.model;
+              console.log(body1.model);
+              req.session.user = body1.model;
               res.redirect('/dashboard');
             }).catch(function(err){
               req.flash('error_msg', err);

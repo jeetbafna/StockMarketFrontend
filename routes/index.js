@@ -65,6 +65,13 @@ router.get('/stockhist', ensureAuthenticated, (req, res) =>{
   });
 });
 
+router.get('/wallet', ensureAuthenticated, (req, res) =>{
+  res.render('wallet', {
+    user: req.session.user
+  });
+});
+
+
 router.get('/buystock/:i', ensureAuthenticated, (req, res) =>{
   var i = req.params.i;
   res.render('buystock', {

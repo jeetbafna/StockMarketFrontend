@@ -5,6 +5,7 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
 const path = require('path');
+const compression = require('compression');
 
 const app = express();
 
@@ -64,6 +65,7 @@ app.use((req, res, next) => {
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
 app.use("/static", express.static('./static/'));
+app.use(compression());
 global.login = false;
 const PORT = process.env.PORT || 5000;
 
